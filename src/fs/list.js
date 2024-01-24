@@ -15,7 +15,7 @@ const list = async () => {
     try {
         fileNames = await readdir(targetFolderPath);
     } catch (error) {
-        errorHandler(error, ERROR_CODES.noSuchFileOrDirectory);
+        return errorHandler(error, ERROR_CODES.noSuchFileOrDirectory);
     }
 
     console.log(fileNames);
