@@ -1,24 +1,18 @@
-import * as path from 'node:path';
 import { readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { errorHandler } from '../error-handler.js';
 import { ERROR_CODES } from '../consts.js';
+import { getPath } from '../get-path.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const targetFolder = 'files';
-const targetFolderPath = path.join(__dirname, targetFolder);
+const targetFolderPath = getPath(fileURLToPath(import.meta.url));
 
 const list = async () => {
-    let fileNames;
     try {
-        fileNames = await readdir(targetFolderPath);
+        const fileNames = await readdir(targetFolderPath);
+        console.log(fileNames);
     } catch (error) {
         return errorHandler(error, ERROR_CODES.noSuchFileOrDirectory);
     }
-
-    console.log(fileNames);
 };
 
 await list();

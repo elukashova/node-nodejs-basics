@@ -1,18 +1,13 @@
-import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { errorHandler } from '../error-handler.js';
 import { ERROR_CODES } from '../consts.js';
+import { getPath } from '../get-path.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const targetFolder = 'files';
 const wrongFileName = 'wrongFilename.txt';
 const properFileName = 'properFilename.md';
-
-const wrongFilePath = path.join(__dirname, targetFolder, wrongFileName);
-const targetFilePath = path.join(__dirname, targetFolder, properFileName);
+const wrongFilePath = getPath(fileURLToPath(import.meta.url), wrongFileName);
+const targetFilePath = getPath(fileURLToPath(import.meta.url), properFileName);
 
 const rename = async (oldFilePath, newFilePath) => {
     try {

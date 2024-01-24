@@ -3,20 +3,17 @@ import * as fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { errorHandler } from '../error-handler.js';
 import { ERROR_CODES } from '../consts.js';
+import { getPath } from '../get-path.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const targetFolder = 'files';
 const fileToRemove = 'fileToRemove.txt';
-const targetFilePath = path.join(__dirname, targetFolder, fileToRemove);
+const targetFilePath = getPath(fileURLToPath(import.meta.url), fileToRemove);
 
-const remove = async () => {
+const remove = async (fileToRemove) => {
     try {
-        await fs.rm(targetFilePath);
+        await fs.rm(fileToRemove);
     } catch (error) {
         errorHandler(error, ERROR_CODES.noSuchFileOrDirectory);
     } 
 };
 
-await remove();
+await remove(targetFilePath);

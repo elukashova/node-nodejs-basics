@@ -1,26 +1,23 @@
-import * as path from 'node:path';
+import { join } from 'node:path';
 import * as fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { ERROR_CODES } from '../consts.js';
 import { errorHandler } from '../error-handler.js';
+import { getPath } from '../get-path.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const sourceFolder = 'files';
 const newFolderName = 'files_copy';
-const sourceFolderPath = path.join(__dirname, sourceFolder);
-const targetFolderPath = path.join(__dirname, newFolderName);
+const sourceFolderPath = getPath(fileURLToPath(import.meta.url));
+const targetFolderPath = getPath(fileURLToPath(import.meta.url), '', newFolderName);
 
-const copy = async () => {
+const copy = async (source, target) => {
     try {
-        const files = await fs.readdir(sourceFolderPath, { withFileTypes: true });
-        
-        await fs.mkdir(targetFolderPath);
+        const files = await fs.readdir(source, { withFileTypes: true });
+
+        await fs.mkdir(target);
 
         for (const file of files) {
-            const sourceFilePath = path.join(sourceFolderPath, file.name);
-            const targetFilePath = path.join(targetFolderPath, file.name);
+            const sourceFilePath = join(source, file.name);
+            const targetFilePath = join(target, file.name);
             const contentToCopy = await fs.readFile(sourceFilePath);
 
             if (file.isFile()) {
@@ -33,4 +30,4 @@ const copy = async () => {
     }
 };
 
-await copy();
+await copy(sourceFolderPath, targetFolderPath);
