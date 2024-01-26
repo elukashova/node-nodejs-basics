@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { errorHandler } from '../error-handler.js';
+import { errorHandler } from '../utils.js';
 import { ERROR_CODES } from '../consts.js';
 import { getPath } from '../get-path.js';
 
