@@ -1,10 +1,12 @@
 const prefix = 'RSS_';
 
 const parseEnv = (prefix) => {
-    const output = Object.entries(process.env)
-    .map(([key, value]) => {
+    const envVariables = Object.entries(process.env);
+    
+    const output = envVariables.map(([key, value], index) => {
         if (key.startsWith(prefix)) {
-            return `${key}=${value};`;
+            const lastChar = index === envVariables.length - 1 ? '' : ';';
+            return `${key}=${value}${lastChar}`;
         }
     })
 

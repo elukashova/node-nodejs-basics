@@ -1,12 +1,11 @@
 import { createReadStream, createWriteStream } from 'node:fs';
-import { fileURLToPath } from 'node:url';
 import { createGzip } from 'node:zlib';
 import { getPath } from '../utils.js';
 
 const fileToCompress = 'fileToCompress.txt';
-const targetFile = 'archive.gz';
-const fileToCompressPath = getPath(fileURLToPath(import.meta.url), fileToCompress);
-const targetFilePath = getPath(fileURLToPath(import.meta.url), targetFile);
+const compressedFile = 'archive.gz';
+const fileToCompressPath = getPath(import.meta.url, fileToCompress);
+const compressedFilePath = getPath(import.meta.url, compressedFile);
 
 const compress = async (source, target) => {
     const gzip = createGzip();
@@ -15,4 +14,4 @@ const compress = async (source, target) => {
     readStream.pipe(gzip).pipe(writeStream);
 };
 
-await compress(fileToCompressPath, targetFilePath);
+await compress(fileToCompressPath, compressedFilePath);

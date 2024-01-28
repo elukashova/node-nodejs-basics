@@ -1,19 +1,20 @@
-import { join } from 'node:path';
 import * as fs from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import { ERROR_CODES } from '../consts.js';
-import { errorHandler } from '../error-handler.js';
-import { getPath } from '../get-path.js';
+import { doesFileExist, errorHandler, getPath } from '../utils.js';
 
 const newFolderName = 'files_copy';
-const sourceFolderPath = getPath(fileURLToPath(import.meta.url));
-const targetFolderPath = getPath(fileURLToPath(import.meta.url), '', newFolderName);
+const sourceFolderPath = getPath(import.meta.url);
+const targetFolderPath = getPath(import.meta.url, '', newFolderName);
 
 const copy = async (source, target) => {
     try {
-        const files = await fs.readdir(source, { withFileTypes: true });
+        if (!await doesFileExist(source)) {
+            throw Error(errorMessage);
+        }
 
         await fs.mkdir(target);
+        const files = await fs.readdir(source, { withFileTypes: true });
 
         for (const file of files) {
             const sourceFilePath = join(source, file.name);
@@ -26,7 +27,6 @@ const copy = async (source, target) => {
         }
     } catch (error) {
         errorHandler(error, ERROR_CODES.fileExists);
-        errorHandler(error, ERROR_CODES.noSuchFileOrDirectory);
     }
 };
 

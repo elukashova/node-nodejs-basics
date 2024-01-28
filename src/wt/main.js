@@ -1,10 +1,9 @@
 import * as os from 'node:os';
-import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import { getPath } from '../utils.js';
 
 const workerFileName = 'worker.js';
-const workerFilePath = getPath(fileURLToPath(import.meta.url), workerFileName, '');
+const workerFilePath = getPath(import.meta.url, workerFileName, '');
 
 const performCalculations = async (filePath) => {
     const baseOffset = 10;
