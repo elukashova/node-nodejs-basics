@@ -7,10 +7,12 @@ export const errorHandler = (incomingError, targetError) => {
     }
 }
 
-export const getPath = (__filename, fileName = '', folderName = 'files') => {
-    const __dirname = path.dirname(__filename);
+export const getPath = (fileURL, fileName = '', folderName = 'files') => {
+    const __dirname = path.dirname(fileURL);
 
-    if (fileName) {
+    if (!folderName) {
+        return path.join(__dirname, fileName); 
+    } else if (fileName) {
         return path.join(__dirname, folderName, fileName);
     } else {
         return path.join(__dirname, folderName);
